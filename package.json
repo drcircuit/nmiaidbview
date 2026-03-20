@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "description": "Azure Functions app that serves a live view of the nmiai.tasks table.",
-  "main": "src/functions/*.js",
+  "main": "src/index.js",
   "scripts": {
     "start": "func start",
     "test": "node -e \"console.log('No tests configured')\""
