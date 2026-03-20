@@ -63,18 +63,15 @@ If `DB_CONNECTION_STRING` is present, the app uses it and ignores the individual
 
 ## GitHub deployment
 
-The repository includes a GitHub Actions workflow at `.github/workflows/deploy-function-app.yml`.
+This repository uses the Azure-portal-generated workflow at `.github/workflows/main_nmiai.yml`.
 
-Configure these repository settings before pushing to `main` for deployment:
+If you configured Deployment Center in the Azure portal, pushing to `main` triggers deployment automatically.
 
-- Repository variable: `AZURE_FUNCTIONAPP_NAME`
-- Repository secret: `AZURE_FUNCTIONAPP_PUBLISH_PROFILE`
+The workflow uses the Azure login secrets created by the portal integration:
 
-To get the publish profile from Azure:
-
-1. Open your Function App in the Azure portal.
-2. Open `Get publish profile` and download the file.
-3. Copy the file contents into the `AZURE_FUNCTIONAPP_PUBLISH_PROFILE` GitHub secret.
+- `AZUREAPPSERVICE_CLIENTID_...`
+- `AZUREAPPSERVICE_TENANTID_...`
+- `AZUREAPPSERVICE_SUBSCRIPTIONID_...`
 
 You still need to configure the database app settings in the Function App itself. The workflow deploys code, but it does not create or update Azure app settings.
 
