@@ -1,5 +1,16 @@
 const { app } = require('@azure/functions');
-const { getTasks } = require('../lib/sqlClient');
+const fs = require('node:fs/promises');
+const path = require('node:path');
+
+async function getHomePageHtml() {
+  const filePath = path.join(__dirname, '..', 'site', 'index.html');
+
+  try {
+    return await fs.readFile(filePath, 'utf8');
+  } catch (error) {
+    throw new Error(`Unable to read home page at ${filePath}: ${error.message}`);
+  }
+}
 
 app.http('home', {
   methods: ['GET'],
@@ -7,32 +18,24 @@ app.http('home', {
   route: '',
   handler: async (request, context) => {
     try {
-      const limitParam = Number.parseInt(request.query.get('limit') ?? '100', 10);
-      const rows = await getTasks(limitParam);
+      const html = await getHomePageHtml();
 
       return {
         headers: {
-          'content-type': 'application/json; charset=utf-8',
+          'content-type': 'text/html; charset=utf-8',
           'cache-control': 'no-store'
         },
-        jsonBody: {
-          refreshedAtUtc: new Date().toISOString(),
-          rowCount: rows.length,
-          rows
-        }
+        body: html
       };
     } catch (error) {
-      context.error('Failed to fetch tasks', error);
+      context.error('Failed to load home page', error);
 
       return {
         status: 500,
         headers: {
-          'content-type': 'application/json; charset=utf-8'
+          'content-type': 'text/plain; charset=utf-8'
         },
-        jsonBody: {
-          error: 'Failed to fetch tasks.',
-          detail: error.message
-        }
+        body: 'Failed to load the live task feed page.'
       };
     }
   }
