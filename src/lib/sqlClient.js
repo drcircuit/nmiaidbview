@@ -69,6 +69,20 @@ async function getTasks(limit = 100) {
   return result.recordset;
 }
 
+async function getTaskStats() {
+  const schemaName = quoteIdentifier(requireSetting('DB_SCHEMA', 'dbo'));
+  const tableName = quoteIdentifier(requireSetting('DB_TABLE', 'tasks'));
+  const pool = await getPool();
+  const query = `SELECT COUNT_BIG(1) AS totalRows FROM ${schemaName}.${tableName};`;
+  const result = await pool.request().query(query);
+  const totalRows = result.recordset?.[0]?.totalRows ?? 0;
+
+  return {
+    totalRows: Number.parseInt(String(totalRows), 10) || 0
+  };
+}
+
 module.exports = {
-  getTasks
+  getTasks,
+  getTaskStats
 };

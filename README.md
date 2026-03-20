@@ -5,7 +5,8 @@ This project is a Node.js Azure Functions app that serves a small web UI and rea
 ## What it does
 
 - `GET /` returns the live web UI that reflects the current rows from the configured SQL table.
-- `GET /api/tasks` also returns the same JSON data dump.
+- `GET /tasks` returns the task rows from Azure SQL.
+- `GET /stats` returns a compact stats payload from Azure SQL.
 
 ## Required app settings
 
@@ -84,5 +85,5 @@ DB_CONNECTION_STRING=Server=tcp:nmiai.database.windows.net,1433;Database=nmiai;U
 
 - The SQL query is intentionally generic so it works without assuming the `tasks` schema.
 - Table and schema names are validated before being included in SQL.
-- `/` serves the HTML page and `/api/tasks` serves the JSON payload consumed by the page.
+- `/` serves the HTML page, `/tasks` serves the task JSON payload, and `/stats` serves summary stats.
 - `Authentication="Active Directory Default"` is not the right match for a SQL username and password. For this app, use SQL authentication through `DB_CONNECTION_STRING` or the separate `DB_*` settings.

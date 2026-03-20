@@ -1,14 +1,13 @@
 const { app } = require('@azure/functions');
-const { getTasks } = require('../lib/sqlClient');
+const { getTaskStats } = require('../lib/sqlClient');
 
-app.http('tasks', {
+app.http('stats', {
   methods: ['GET'],
   authLevel: 'anonymous',
-  route: 'tasks',
+  route: 'stats',
   handler: async (request, context) => {
     try {
-      const limitParam = Number.parseInt(request.query.get('limit') ?? '100', 10);
-      const rows = await getTasks(limitParam);
+      const stats = await getTaskStats();
 
       return {
         headers: {
@@ -17,12 +16,11 @@ app.http('tasks', {
         },
         jsonBody: {
           refreshedAtUtc: new Date().toISOString(),
-          rowCount: rows.length,
-          rows
+          ...stats
         }
       };
     } catch (error) {
-      context.error('Failed to fetch tasks', error);
+      context.error('Failed to fetch stats', error);
 
       return {
         status: 500,
@@ -30,7 +28,7 @@ app.http('tasks', {
           'content-type': 'application/json; charset=utf-8'
         },
         jsonBody: {
-          error: 'Failed to fetch tasks.',
+          error: 'Failed to fetch stats.',
           detail: error.message
         }
       };
