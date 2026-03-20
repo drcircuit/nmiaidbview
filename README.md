@@ -86,5 +86,6 @@ DB_CONNECTION_STRING=Server=tcp:nmiai.database.windows.net,1433;Database=nmiai;U
 
 - The SQL query is intentionally generic so it works without assuming the `tasks` schema.
 - Table and schema names are validated before being included in SQL.
+- HTTP responses include CORS headers allowing `https://jkorsvik.github.io` as the browser origin.
 - `/` serves the HTML page, `/tasks` serves the task JSON payload, `/stats` serves summary stats, and `/openapi.json` serves OpenAPI specs.
 - `Authentication="Active Directory Default"` is not the right match for a SQL username and password. For this app, use SQL authentication through `DB_CONNECTION_STRING` or the separate `DB_*` settings.

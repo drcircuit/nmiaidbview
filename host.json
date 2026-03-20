@@ -10,7 +10,12 @@
   },
   "extensions": {
     "http": {
-      "routePrefix": ""
+      "routePrefix": "",
+      "customHeaders": {
+        "Access-Control-Allow-Origin": "https://jkorsvik.github.io",
+        "Access-Control-Allow-Methods": "GET,OPTIONS",
+        "Access-Control-Allow-Headers": "*"
+      }
     }
   },
   "extensionBundle": {
