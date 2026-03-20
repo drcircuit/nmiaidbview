@@ -268,7 +268,7 @@
 
       async function refresh() {
         try {
-          const response = await fetch('/api/tasks?limit=100', { cache: 'no-store' });
+          const response = await fetch('/tasks?limit=100', { cache: 'no-store' });
           const payload = await response.json();
 
           if (!response.ok) {
