@@ -78,7 +78,7 @@ async function getTaskStats() {
   const totalRows = result.recordset?.[0]?.totalRows ?? 0;
 
   return {
-    totalRows: Number.parseInt(String(totalRows), 10) || 0
+    totalRows: Number(totalRows) || 0
   };
 }
 
